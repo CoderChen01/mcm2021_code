@@ -64,11 +64,18 @@ class BaseDataReader:
 class DrawWordsReader(BaseDataReader):
     def __init__(self):
         self.stopwords = stopwords.words('english')
-        for w in ['!', ',', '.', '?', '-s', '-ly', '</s>', 's']:
+        mystopwords = [
+            'I', 'It', "'s", 'long', 'picture', 'saw', 'one', 'get',
+            'like', 'hornet', "'", 'sure', 'seen', '.', ',', '’',
+            'we', '2', "n't", 'found', 'looked', 'flew', 'around',
+            'asian', 'suspect', 'back', 'area', 'ski', 'sent', 'leavenworth',
+            'today', 'specimen', 'live', 'nearby', 'wa', 'big'
+        ]
+        for w in mystopwords:
             self.stopwords.append(w)
 
     def _get_words(self, dataframe):
-        words = set()
+        words = []
         notes = dataframe['Notes']
 
         for note in notes:
@@ -76,7 +83,7 @@ class DrawWordsReader(BaseDataReader):
                 continue
             sents = nltk.sent_tokenize(str(note))
             for sent in sents:
-                words.update(nltk.word_tokenize(sent))
+                words.extend(nltk.word_tokenize(sent.lower()))
 
         return [word for word in words if word not in self.stopwords]
 
