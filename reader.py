@@ -64,19 +64,13 @@ class BaseDataReader:
 class DrawWordsReader(BaseDataReader):
     def __init__(self):
         self.stopwords = stopwords.words('english')
-        mystopwords = [
-            'I', 'It', "'s", 'long', 'picture', 'saw', 'one', 'get',
-            'like', 'hornet', "'", 'sure', 'seen', '.', ',', '’',
-            'we', '2', "n't", 'found', 'looked', 'flew', 'around',
-            'asian', 'suspect', 'back', 'area', 'ski', 'sent', 'leavenworth',
-            'today', 'specimen', 'live', 'nearby', 'wa', 'big'
-        ]
-        for w in mystopwords:
+
+        for w in configs.MY_STOP_WORDS:
             self.stopwords.append(w)
 
-    def _get_words(self, dataframe):
+    def _get_words(self, name, dataframe):
         words = []
-        notes = dataframe['Notes']
+        notes = dataframe[name]
 
         for note in notes:
             if note == '#':
@@ -87,20 +81,32 @@ class DrawWordsReader(BaseDataReader):
 
         return [word for word in words if word not in self.stopwords]
 
-    def get_all_positive_id_words(self):
-        return self._get_words(self.positive_data)
+    def get_all_positive_id_notes_words(self):
+        return self._get_words('Notes', self.positive_data)
 
-    def get_all_negative_id_words(self):
-        return self._get_words(self.negative_data)
+    def get_all_negative_id_notes_words(self):
+        return self._get_words('Notes', self.negative_data)
 
-    def get_all_unprocesssed_words(self):
-        return self._get_words(self.unprocessed_data)
+    def get_all_unprocesssed_notes_words(self):
+        return self._get_words('Notes', self.unprocessed_data)
 
-    def get_all_unverified_words(self):
-        return self._get_words(self.unverified_data)
+    def get_all_unverified_notes_words(self):
+        return self._get_words('Notes', self.unverified_data)
 
-    def get_all_users_words(self):
-        return self._get_words(self.dataset)
+    def get_all_users_notes_words(self):
+        return self._get_words('Notes', self.dataset)
+
+    def get_all_positive_id_comments_words(self):
+        return self._get_words('Lab Comments', self.positive_data)
+
+    def get_all_negative_id_comments_words(self):
+        return self._get_words('Lab Comments', self.negative_data)
+
+    def get_all_unverified_comments_words(self):
+        return self._get_words('Lab Comments', self.unverified_data)
+
+    def get_all_users_comments_words(self):
+        return self._get_words('Lab Comments', self.dataset)
 
     @staticmethod
     def get_freq_dist(words):

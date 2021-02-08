@@ -39,24 +39,32 @@ class WordCloudDrawer(BaseDrawer):
         self.word_cloud_drawer.to_file(os.path.join(self.save_path, filename))
 
     def draw_positive(self):
-        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_positive_id_words()),
-                              'positive_id_words_cloud.jpg')
+        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_positive_id_notes_words()),
+                              'positive_id_notes_words_cloud.jpg')
+        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_positive_id_comments_words()),
+                              'positive_id_comments_words_cloud.jpg')
 
     def draw_negative(self):
-        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_negative_id_words()),
-                              'negative_id_words_cloud.jpg')
+        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_negative_id_notes_words()),
+                              'negative_id_notes_words_cloud.jpg')
+        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_negative_id_comments_words()),
+                              'negative_id_comments_words_cloud.jpg')
 
     def draw_unprocessed(self):
-        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_unprocesssed_words()),
-                              'unprocessed_words_cloud.jpg')
+        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_unprocesssed_notes_words()),
+                              'unprocessed_notes_words_cloud.jpg')
 
     def draw_unverified(self):
-        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_unverified_words()),
-                              'unverified_words_cloud.jpg')
+        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_unverified_notes_words()),
+                              'unverified_notes_words_cloud.jpg')
+        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_unverified_comments_words()),
+                              'unverified_comments_words_cloud.jpg')
 
     def draw_all(self):
-        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_users_words()),
-                              'all_words_cloud.jpg')
+        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_users_notes_words()),
+                              'all_notes_words_cloud.jpg')
+        self._draw_word_cloud(self.reader.get_freq_dist(self.reader.get_all_users_comments_words()),
+                              'all_comments_words_cloud.jpg')
 
 
 class WordFrequencyDrawer(BaseDrawer):
@@ -64,8 +72,8 @@ class WordFrequencyDrawer(BaseDrawer):
     task = 'word_frequecy'
 
 
-    def _draw_words_frequency_bar(self, frequency, filename):
-        top10 = frequency.most_common(10)
+    def _draw_words_frequency_bar(self, frequency_dict, filename):
+        top10 = frequency_dict.most_common(10)
         x = [ele[0] for ele in top10]
         y = [ele[1] for ele in top10]
         _, ax = plt.subplots()
@@ -74,30 +82,41 @@ class WordFrequencyDrawer(BaseDrawer):
         ax.set_title(filename.split('.')[0].replace('_', ' '))
 
         plt.savefig(os.path.join(self.save_path, filename))
-        plt.show()
 
 
     def draw_positive(self):
         self._draw_words_frequency_bar(
-            self.reader.get_freq_dist(self.reader.get_all_positive_id_words()),
-            'positive_id_frequency_histogram.jpg')
+            self.reader.get_freq_dist(self.reader.get_all_positive_id_notes_words()),
+            'positive_id_notes_words_frequency_histogram.jpg')
+        self._draw_words_frequency_bar(
+            self.reader.get_freq_dist(self.reader.get_all_positive_id_comments_words()),
+            'positive_id_comments_words_frequency_histogram.jpg')
 
     def draw_negative(self):
         self._draw_words_frequency_bar(
-            self.reader.get_freq_dist(self.reader.get_all_negative_id_words()),
-            'negative_id_frequency_histogram.jpg')
+            self.reader.get_freq_dist(self.reader.get_all_negative_id_notes_words()),
+            'negative_id_notes_words_frequency_histogram.jpg')
+        self._draw_words_frequency_bar(
+            self.reader.get_freq_dist(self.reader.get_all_negative_id_comments_words()),
+            'negative_id_comments_words_frequency_histogram.jpg')
 
     def draw_unprocessed(self):
         self._draw_words_frequency_bar(
-            self.reader.get_freq_dist(self.reader.get_all_unprocesssed_words()),
-            'unprocessed_frequency_histogram.jpg')
+            self.reader.get_freq_dist(self.reader.get_all_unprocesssed_notes_words()),
+            'unprocessed_notes_words_frequency_histogram.jpg')
 
     def draw_unverified(self):
         self._draw_words_frequency_bar(
-            self.reader.get_freq_dist(self.reader.get_all_unverified_words()),
-            'unverified_frequency_histogram.jpg')
+            self.reader.get_freq_dist(self.reader.get_all_unverified_notes_words()),
+            'unverified_notes_words_frequency_histogram.jpg')
+        self._draw_words_frequency_bar(
+            self.reader.get_freq_dist(self.reader.get_all_unverified_comments_words()),
+            'unverified_comments_words_frequency_histogram.jpg')
 
     def draw_all(self):
         self._draw_words_frequency_bar(
-            self.reader.get_freq_dist(self.reader.get_all_users_words()),
-            'all_words_frequency_histogram.jpg')
+            self.reader.get_freq_dist(self.reader.get_all_users_notes_words()),
+            'all_notes_words_frequency_histogram.jpg')
+        self._draw_words_frequency_bar(
+            self.reader.get_freq_dist(self.reader.get_all_users_comments_words()),
+            'all_comments_words_frequency_histogram.jpg')
